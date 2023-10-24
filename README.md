@@ -31,4 +31,13 @@
     - Competition: multi-player option. A lot harder to implement. 
 - Implement bots (easy = x cpm, medium = y cpm, hard = z cpm) --> cpm = characters/minute
 - Implement scoreboard + ranking system
-- Google ads AFTER first race
+    - Login 
+        - Create account OR login through 3rd party account (Google, Microsoft, Github)
+    - User Settings/Preferences
+        - Change colour scheme 
+            - Default: Dark mode, Alt: Light mode
+            - Offer ability to change 2 colours (background and text)
+        - Profile picture
+        - Username
+        - Text size
+- Ads AFTER first race (likely Google ads, but can adjust at a later time)
