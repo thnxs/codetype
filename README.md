@@ -1,70 +1,34 @@
-# Getting Started with Create React App
+# CodeType
 
-This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
+## Vision
+- As students, we enjoy a little bit of competition. We also want to game-ify this competition.
+- We, like many others, have had difficulty keeping motivation high in regards to recruiting.
+- This tool, CodeType, is designed to solve this issue.
 
-## Available Scripts
+## How will we unite software engineers
+- We plan to create a typing competition like no other.
+- While typing speed, accuracy, and completion matter, we plan to ramp up the stakes:
+    - The users will be typing common data structures or algorithms, 
+    such as binary search, sorting functions, implementing stacks, etc.
+    - We will have two game modes:
+        - Timed: 30, 60, 90, 120 seconds
+        - Competition: easy/medium/hard bot or other online users
+    - The algorithms will be written in placeholder text for users to fill in, while the 
+    competition mode will feature a slider to compare how you are doing against your competition.
 
-In the project directory, you can run:
-
-### `npm start`
-
-Runs the app in the development mode.\
-Open [http://localhost:3000](http://localhost:3000) to view it in your browser.
-
-The page will reload when you make changes.\
-You may also see any lint errors in the console.
-
-### `npm test`
-
-Launches the test runner in the interactive watch mode.\
-See the section about [running tests](https://facebook.github.io/create-react-app/docs/running-tests) for more information.
-
-### `npm run build`
-
-Builds the app for production to the `build` folder.\
-It correctly bundles React in production mode and optimizes the build for the best performance.
-
-The build is minified and the filenames include the hashes.\
-Your app is ready to be deployed!
-
-See the section about [deployment](https://facebook.github.io/create-react-app/docs/deployment) for more information.
-
-### `npm run eject`
-
-**Note: this is a one-way operation. Once you `eject`, you can't go back!**
-
-If you aren't satisfied with the build tool and configuration choices, you can `eject` at any time. This command will remove the single build dependency from your project.
-
-Instead, it will copy all the configuration files and the transitive dependencies (webpack, Babel, ESLint, etc) right into your project so you have full control over them. All of the commands except `eject` will still work, but they will point to the copied scripts so you can tweak them. At this point you're on your own.
-
-You don't have to ever use `eject`. The curated feature set is suitable for small and middle deployments, and you shouldn't feel obligated to use this feature. However we understand that this tool wouldn't be useful if you couldn't customize it when you are ready for it.
-
-## Learn More
-
-You can learn more in the [Create React App documentation](https://facebook.github.io/create-react-app/docs/getting-started).
-
-To learn React, check out the [React documentation](https://reactjs.org/).
-
-### Code Splitting
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/code-splitting](https://facebook.github.io/create-react-app/docs/code-splitting)
-
-### Analyzing the Bundle Size
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/analyzing-the-bundle-size](https://facebook.github.io/create-react-app/docs/analyzing-the-bundle-size)
-
-### Making a Progressive Web App
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/making-a-progressive-web-app](https://facebook.github.io/create-react-app/docs/making-a-progressive-web-app)
-
-### Advanced Configuration
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/advanced-configuration](https://facebook.github.io/create-react-app/docs/advanced-configuration)
-
-### Deployment
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/deployment](https://facebook.github.io/create-react-app/docs/deployment)
-
-### `npm run build` fails to minify
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify](https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify)
+## To Do (higher priority is higher in list):
+- Accept user input as text (typing)
+- Create placeholder text (Algos)
+- Have the user's text overlap with the placeholder text (if the same) or show an error (if different)
+- Different algorithms (Aim for 500+ different implementations)
+    - Some code will be hyper-optimized, some will be redundant on purpose.
+        - ie. one line for loop vs multi-line for loop
+        - excess print statement :)
+    - Multi-language support. Aiming to start with (Python, Java, JS, C++, C)
+- Dark + light mode (Dark mode >>>)
+- Timed and competition game modes
+    - Timed: single player. Start with this.
+    - Competition: multi-player option. A lot harder to implement. 
+- Implement bots (easy = x cpm, medium = y cpm, hard = z cpm) --> cpm = characters/minute
+- Implement scoreboard + ranking system
+- Google ads AFTER first race
