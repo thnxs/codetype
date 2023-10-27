@@ -5,7 +5,7 @@ function Home() {
     <>
         <div className = "header">
             <ul>
-                <li>Header Header Header Header Header Header Header Header Header Header Header Header Header</li>
+                <li>Header Header Header Header Header Header Header Header Header Header Header Header Header Head</li>
             </ul>
         </div>
     </>

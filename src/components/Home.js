@@ -58,11 +58,17 @@ function Home() {
         caret.current.style.top = rect.top + 1 + "px"
       }
     }else if (event.key.length === 1 && typed.length > 0){
+      //Correctness validtion
+      if (letters.length === active.querySelectorAll(".correct").length && typed.length === letters.length){
+        active.classList.add("correct")
+      } else{
+        active.classList.add("incorrect")
+      }
       //Next word handling
       active.classList.remove("active");
       active.nextElementSibling.classList.add("active");
       typed = []
-      //Correctness validtion
+    
       //Caret Positioning on Next word
       const rect = typebox.current.querySelector(".active").firstChild.getBoundingClientRect();
       caret.current.style.left = rect.left - 1 + "px"
