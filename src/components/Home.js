@@ -13,8 +13,13 @@ function Home() {
     caret.current.style.top = rect.top + 1 + "px"
   });
 
-  let typed = []  
-
+   
+  // handleKeyDown To do:
+  // track metrics; correct, incorrect, wpm, etc.
+  // finish implementing the delete key
+  // bugfix on extra characters
+  // validate that user has finished typing the code
+  let typed = [] 
   const handleKeyDown = (event) => {
     const active = typebox.current.querySelector(".active");
     const letters = active.querySelectorAll("letter");
@@ -46,6 +51,7 @@ function Home() {
         extra.classList.add("extra")
         extra.innerHTML = event.key
         active.appendChild(extra) 
+        //Caret Positioning on Extra Characters
         const rect = active.querySelectorAll("letter")[typed.length].getBoundingClientRect();
         caret.current.style.left = rect.right - 1 + "px"
         caret.current.style.top = rect.top + 1 + "px"
@@ -57,6 +63,9 @@ function Home() {
       typed = []
       //Correctness validtion
       //Caret Positioning on Next word
+      const rect = typebox.current.querySelector(".active").firstChild.getBoundingClientRect();
+      caret.current.style.left = rect.left - 1 + "px"
+      caret.current.style.top = rect.top + 1 + "px"
 
     }else if (event.key === "Backspace" && typed.length > 0){
       //Deltion handling
@@ -70,8 +79,12 @@ function Home() {
       }
       //Move caret on deletion
     }
+    
   }
-
+  // Build the word and letter map from a target string
+  // To do:
+  // Implement a way to handle tabs and newlines
+  // Grab target from mongo db collection of targets
   const target = "for i in range(0,1): for i in range for i in range if i in range for i in range"
   const format = target.split(" ")
   const targetMap = format.map((e,i) => {
