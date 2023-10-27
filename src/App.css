@@ -1,9 +1,12 @@
 :root{
-  --background: #1a1d20;
+  --background: #101316;
   --accent: #8957ff;
   --text: #6c2dff;
   --textFade: #6c2dffb6;
   --textExcited: #ffffff;
+  --textWrong: #d81c1c;
+  --textCorrect: #f700ff;
+  --textExtra: #941a1a;
 }
 
 body{
@@ -14,6 +17,9 @@ body{
 }
 li{
   list-style: none !important;
+}
+letter{
+  margin-right:0.1rem
 }
 .header{
   display: flex;
@@ -26,11 +32,49 @@ li{
 
 .type{
   display: flex;
-  justify-content: space-between;
+  justify-content: center !important;
   align-items: center;
-  color: var(--textFade)!important;
+  text-align: center;
   font: 1.5rem 'Roboto', sans-serif;
+  margin-top: 25%;
+  margin-bottom: 30%;
 }
-.typed{
-  color: var(--textFade)!important;
+.type:focus{
+  outline:none;
+}
+.faded{
+  color: var(--textFade);
+}
+
+.word{
+  margin-right:10px
+}
+
+.correct{
+  color: var(--textCorrect)
+}
+.incorrect{
+  color: var(--textWrong)
+}
+.extra{
+  color: var(--textExtra)
+}
+
+#caret{
+  border-radius: .5rem;
+  width: 0.1em;
+  height: 1.6rem;
+  background: var(--textExcited);
+  position: absolute;
+  animation: caretFlash 1s infinite;
+}
+@keyframes caretFlash
+{
+  0%{
+    opacity: 0%;
+  }
+  100%
+  {
+  opacity: 100%;
+  }
 }
