@@ -18,6 +18,7 @@ function Home() {
   // track metrics; correct, incorrect, wpm, etc.
   // finish implementing the delete key
   // bugfix on extra characters
+  // word correctness validation on spacebar
   // validate that user has finished typing the code
   let typed = [] 
   const handleKeyDown = (event) => {
