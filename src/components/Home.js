@@ -1,19 +1,50 @@
-import React, {useEffect,useRef} from "react";
+import React, {useEffect,useRef,useState} from "react";
 
 function Home() {
   
   const typebox = useRef(null);
   const caret = useRef(null)
 
-  useEffect(() => {
-    typebox.current.addEventListener("keydown", handleKeyDown);
-    
-    const rect = typebox.current.firstChild.firstChild.getBoundingClientRect();
-    caret.current.style.left = rect.x - 1 + "px"
-    caret.current.style.top = rect.top + 1 + "px"
-  });
+  const [countDiff,setCountDiff] = useState(0)
+  const [target,setTarget] = useState("test")
+  const [words,setWords] = useState([])
 
-   
+  useEffect(() => {
+    const target = "for i in range(0,1): for i in range for i in range if i in range for i in range"
+    const words = target.split(" ")
+    const length = words.length
+    setTarget(target)
+    setWords(words)
+    setCountDiff(length)
+    typebox.current.addEventListener("keydown", handleKeyDown);
+  },[]);
+
+  const initCaret = ()=>{
+    const rect = typebox.current.getBoundingClientRect();
+    caret.current.style.left = rect.left - 1 + "px"
+    caret.current.style.top = rect.top + 1 + "px"
+  }
+
+  // Build the word and letter map from a target string
+  // To do:
+  // Implement a way to handle tabs and newlines
+  // Grab target from mongo db collection of targets
+  const targetMap = (initCaret) => {
+    const map = words.map((e,i) => {
+      let word = e.split("")
+      return (
+        <div className = {i===0 ? "word active" : "word"}>
+          {word.map((i) => {return (<letter>{i}</letter> )})}
+        </div>
+      )
+    })
+    if (map.length > 0){initCaret()}
+    return(
+      map
+    )
+  };
+ 
+  
   // handleKeyDown To do:
   // track metrics; correct, incorrect, wpm, etc.
   // finish implementing the delete key
@@ -64,6 +95,8 @@ function Home() {
       } else{
         active.classList.add("incorrect")
       }
+      // setCountDiff(countDiff - 1)
+      console.log(countDiff)
       //Next word handling
       active.classList.remove("active");
       active.nextElementSibling.classList.add("active");
@@ -75,7 +108,7 @@ function Home() {
       caret.current.style.top = rect.top + 1 + "px"
 
     }else if (event.key === "Backspace" && typed.length > 0){
-      //Deltion handling
+      //Deletion handling
       typed.pop()
       let child = active.lastChild
       if ("extra" in child.classList) {
@@ -88,35 +121,11 @@ function Home() {
     }
     
   }
-  // Build the word and letter map from a target string
-  // To do:
-  // Implement a way to handle tabs and newlines
-  // Grab target from mongo db collection of targets
-  const target = "for i in range(0,1): for i in range for i in range if i in range for i in range"
-  const format = target.split(" ")
-  const targetMap = format.map((e,i) => {
-    let word = e.split("")
-    let first = false
-    if (i === 0) {
-       first = true
-    }
-    return (
-      <div className = {first ? "word active" : "word"}>
-        {word.map((i) => {
-          return (
-            <letter>
-              {i}
-            </letter> 
-          )
-        })}
-      </div>
-  )});
-  
   return (
     <>
         <div id="caret" ref = {caret}></div>
         <div type = "text" ref = {typebox} className = "type faded" tabIndex="0">
-          {targetMap}
+          {targetMap(initCaret)}
         </div>
     </>
   );

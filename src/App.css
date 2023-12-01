@@ -32,7 +32,7 @@ letter{
 
 .type{
   display: flex;
-  justify-content: center !important;
+  justify-content: left !important;
   align-items: center;
   text-align: center;
   font: 1.5rem 'Roboto', sans-serif;
