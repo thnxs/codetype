@@ -5,9 +5,13 @@ function Home() {
   const typebox = useRef(null);
   const caret = useRef(null)
 
+  const [correct,setCorrect] = useState(0)
+  const [incorrect,setIncorrect] = useState(0)
   const [countDiff,setCountDiff] = useState(0)
   const [target,setTarget] = useState("test")
   const [words,setWords] = useState([])
+  const [caretX,setCaretX] = useState(null)
+  const [caretY,setCaretY] = useState(null)
 
   useEffect(() => {
     const target = "for i in range(0,1): for i in range for i in range if i in range for i in range"
@@ -17,19 +21,17 @@ function Home() {
     setWords(words)
     setCountDiff(length)
     typebox.current.addEventListener("keydown", handleKeyDown);
-  },[]);
-
-  const initCaret = ()=>{
     const rect = typebox.current.getBoundingClientRect();
-    caret.current.style.left = rect.left - 1 + "px"
-    caret.current.style.top = rect.top + 1 + "px"
-  }
+    setCaretX(rect.left - 1 + "px")
+    setCaretY(rect.top + 1 + "px")
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  },[]);
 
   // Build the word and letter map from a target string
   // To do:
   // Implement a way to handle tabs and newlines
   // Grab target from mongo db collection of targets
-  const targetMap = (initCaret) => {
+  const targetMap = () => {
     const map = words.map((e,i) => {
       let word = e.split("")
       return (
@@ -38,7 +40,10 @@ function Home() {
         </div>
       )
     })
-    if (map.length > 0){initCaret()}
+    if (map.length > 0){
+      caret.current.style.left = caretX
+      caret.current.style.top = caretY
+    }
     return(
       map
     )
@@ -70,12 +75,12 @@ function Home() {
         //Caret Positioning on Keydown
         if (typed.length < letters.length-1){
           const rect = letters[typed.length].getBoundingClientRect();
-          caret.current.style.left = rect.left - 1 + "px"
-          caret.current.style.top = rect.top + 1 + "px"
+          setCaretX(rect.left - 1 + "px")
+          setCaretY(rect.top + 1 + "px")
         }else{
           const rect = letters[typed.length -1].getBoundingClientRect();
-          caret.current.style.left = rect.right - 1 + "px"
-          caret.current.style.top = rect.top + 1 + "px"
+          setCaretX(rect.right - 1 + "px")
+          setCaretY(rect.top + 1 + "px")
         }
       }else{
         //Extra characters handling
@@ -92,11 +97,12 @@ function Home() {
       //Correctness validtion
       if (letters.length === active.querySelectorAll(".correct").length && typed.length === letters.length){
         active.classList.add("correct")
+        setCorrect(correct + 1)
       } else{
         active.classList.add("incorrect")
+        setIncorrect(incorrect + 1)
       }
-      // setCountDiff(countDiff - 1)
-      console.log(countDiff)
+      setCountDiff(countDiff - 1)
       //Next word handling
       active.classList.remove("active");
       active.nextElementSibling.classList.add("active");
@@ -104,8 +110,8 @@ function Home() {
     
       //Caret Positioning on Next word
       const rect = typebox.current.querySelector(".active").firstChild.getBoundingClientRect();
-      caret.current.style.left = rect.left - 1 + "px"
-      caret.current.style.top = rect.top + 1 + "px"
+      setCaretX(rect.left - 1 + "px")
+      setCaretY(rect.top + 1 + "px")
 
     }else if (event.key === "Backspace" && typed.length > 0){
       //Deletion handling
@@ -125,8 +131,11 @@ function Home() {
     <>
         <div id="caret" ref = {caret}></div>
         <div type = "text" ref = {typebox} className = "type faded" tabIndex="0">
-          {targetMap(initCaret)}
+          {targetMap()}
         </div>
+        <div>Correct: {correct}</div>
+        <div>Inorrect: {incorrect}</div>
+        <div>Diff: {countDiff}</div>
     </>
   );
 }
