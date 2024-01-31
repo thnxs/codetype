@@ -1,5 +1,5 @@
 import React, {useEffect,useRef,useState} from "react";
-
+import Stats from "./Stats";
 function Home() {
   
   const typebox = useRef(null);
@@ -8,10 +8,11 @@ function Home() {
   const [correct,setCorrect] = useState(0)
   const [incorrect,setIncorrect] = useState(0)
   const [countDiff,setCountDiff] = useState(0)
-  const [target,setTarget] = useState("test")
+  const [target,setTarget] = useState("")
   const [words,setWords] = useState([])
   const [caretX,setCaretX] = useState(null)
   const [caretY,setCaretY] = useState(null)
+  const [isStats,setIsStats] = useState(false)
 
   useEffect(() => {
     const target = "for i in range(0,1): for i in range for i in range if i in range for i in range"
@@ -26,7 +27,6 @@ function Home() {
     setCaretY(rect.top + 1 + "px")
     // eslint-disable-next-line react-hooks/exhaustive-deps
   },[]);
-
   // Build the word and letter map from a target string
   // To do:
   // Implement a way to handle tabs and newlines
@@ -44,12 +44,9 @@ function Home() {
       caret.current.style.left = caretX
       caret.current.style.top = caretY
     }
-    return(
-      map
-    )
+    return map
   };
  
-  
   // handleKeyDown To do:
   // track metrics; correct, incorrect, wpm, etc.
   // finish implementing the delete key
@@ -61,6 +58,7 @@ function Home() {
     const active = typebox.current.querySelector(".active");
     const letters = active.querySelectorAll("letter");
     if (event.key !== " " && event.key.length === 1 ){
+      
       //Correctness validation for letters
       if (typed.length < letters.length){
         typed.push(event.key)
@@ -72,6 +70,9 @@ function Home() {
             letters[i].classList.add("correct")
           }
         })
+        if (active.nextElementSibling == null && typed[typed.length-1] === active.lastChild.innerHTML){
+          setIsStats(true);
+        }
         //Caret Positioning on Keydown
         if (typed.length < letters.length-1){
           const rect = letters[typed.length].getBoundingClientRect();
@@ -97,17 +98,17 @@ function Home() {
       //Correctness validtion
       if (letters.length === active.querySelectorAll(".correct").length && typed.length === letters.length){
         active.classList.add("correct")
-        setCorrect(correct + 1)
+        
       } else{
         active.classList.add("incorrect")
-        setIncorrect(incorrect + 1)
+        
       }
-      setCountDiff(countDiff - 1)
+  
       //Next word handling
+      
       active.classList.remove("active");
       active.nextElementSibling.classList.add("active");
       typed = []
-    
       //Caret Positioning on Next word
       const rect = typebox.current.querySelector(".active").firstChild.getBoundingClientRect();
       setCaretX(rect.left - 1 + "px")
@@ -115,27 +116,43 @@ function Home() {
 
     }else if (event.key === "Backspace" && typed.length > 0){
       //Deletion handling
+      let child = active.children[typed.length - 1]
       typed.pop()
-      let child = active.lastChild
-      if ("extra" in child.classList) {
-        child.remove()
+      if ("extra" === active.lastChild.classList[0]) {
+        active.lastChild.remove()
+        const rect = active.lastChild.getBoundingClientRect();
+        setCaretX(rect.right - 1 + "px")
+        setCaretY(rect.top + 1 + "px")
       }else{
         child.classList.remove("correct")
         child.classList.remove("incorrect")
+        if (typed.length > 0) {
+          let removed = active.children[typed.length - 1]
+          const rect = removed.getBoundingClientRect();
+          setCaretX(rect.right - 1 + "px")
+          setCaretY(rect.top + 1 + "px")
+        }else if (typed.length === 0){
+          let removed = active.children[typed.length]
+          const rect = removed.getBoundingClientRect();
+          setCaretX(rect.left - 1 + "px")
+          setCaretY(rect.top + 1 + "px")
+        }
       }
+
       //Move caret on deletion
     }
     
   }
   return (
     <>
-        <div id="caret" ref = {caret}></div>
-        <div type = "text" ref = {typebox} className = "type faded" tabIndex="0">
-          {targetMap()}
-        </div>
-        <div>Correct: {correct}</div>
-        <div>Inorrect: {incorrect}</div>
-        <div>Diff: {countDiff}</div>
+        {isStats ? <Stats/> : 
+        <>
+          <div id="caret" ref = {caret}></div>
+          <div type = "text" ref = {typebox} className = "type faded" tabIndex="0">
+            {targetMap()}
+          </div>
+        </>}
+        <button type = "button" onClick={()=>{if(isStats){window.location.reload()}else{setIsStats(!isStats)}}}>Toggle stats</button>
     </>
   );
 }
