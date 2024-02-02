@@ -1,9 +1,10 @@
 :root{
   --background: #101316;
   --accent: #8957ff;
-  --text: #6c2dff;
-  --textFade: #6c2dffb6;
+  --text: #8884d8;
+  --textFade: #8884d8;
   --textExcited: #ffffff;
+  --textDull: #ffffff10;
   --textWrong: #d81c1c;
   --textCorrect: #f700ff;
   --textExtra: #941a1a;
@@ -38,6 +39,7 @@ letter{
   font: 1.5rem 'Roboto', sans-serif;
   margin-top: 25%;
   margin-bottom: 30%;
+  flex-wrap: wrap;
 }
 .type:focus{
   outline:none;
