@@ -15,7 +15,7 @@ function Stats(props) {
                 <stop offset="95%" stopColor="#82ca9d" stopOpacity={0}/>
                 </linearGradient>
             </defs>
-            <XAxis dataKey="name" />
+            <XAxis dataKey="name" interval = {props.data.length > 30 ? 3 : 2} />
             <YAxis label = {{value:'Words per Minute',angle:-90,position:'insideLeft',style: { textAnchor: 'middle' }}}/>
             <CartesianGrid stroke="#ffffff10" />
             <Tooltip />
