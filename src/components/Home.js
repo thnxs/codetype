@@ -25,6 +25,13 @@ function Home() {
     setCaretY(rect.top + 1 + "px")
   }
 
+  const finishTyping = () => {
+    setIsStats(true);
+    clearInterval(timer);
+    createDataPoint(true); // create a data point at the time of the last typed character
+    //createDataPoint(false); // create a data point at the time of the closest integer greater than the last typed character
+  }
+
   useEffect(() => {
     const target = "for i in range(0,1): for i in range for i in range if i in range for i in range"
     const words = target.split(" ")
@@ -33,7 +40,7 @@ function Home() {
     typebox.current.addEventListener("keydown", handleKeyDown);
     changeXY("left", typebox.current.getBoundingClientRect());
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  },[]);
+  }, []);
   // Build the word and letter map from a target string
   // To do:
   // Implement a way to handle tabs and newlines
@@ -106,16 +113,16 @@ function Home() {
         })
         //Start timer 
         if (active.previousElementSibling == null && typed.length === 1) {
-            timer = setInterval(() => {millisecondTimer()},10)
+            timer = setInterval(() => {millisecondTimer()}, 10)
         }
      
         //Caret Positioning on Keydown
         if (typed.length < letters.length-1) {
           changeXY("left", letters[typed.length].getBoundingClientRect());
-        }else{
+        } else {
           changeXY("right", letters[typed.length -1].getBoundingClientRect());
         }
-      }else{
+      } else {
         //Extra characters handling
         if (allowableExtra !== 0) {
           const extra = document.createElement("letter")
@@ -127,43 +134,47 @@ function Home() {
           changeXY("right", active.querySelectorAll("letter")[typed.length-1].getBoundingClientRect());
         }
       }
-    }else if (event.key.length === 1 && typed.length > 0) { // Space Bar
+
+      //Finish typing
+      if (active.nextElementSibling == null && typed.length >= active.children.length) {
+        finishTyping();
+      }
+    } else if (event.key.length === 1 && typed.length > 0) { // Space Bar
       //Correctness validtion
       if (letters.length === active.querySelectorAll(".correct").length && typed.length === letters.length) {
-        active.classList.add("correct")
+        active.classList.add("correct");
         
-      } else{
-        active.classList.add("incorrect")
+      } else {
+        active.classList.add("incorrect");
       }
+
       //Finish typing
       if (active.nextElementSibling == null) {
-        setIsStats(true);
-        clearInterval(timer);
-        createDataPoint(true); // create a data point at the time of the last typed character
-        //createDataPoint(false); // create a data point at the time of the closest integer greater than the last typed character
+        active.classList.add("incorrect")
+        active.classList.remove("active");
+        finishTyping();
+      } else {
+        //Next word handling
+        active.classList.remove("active");
+        active.nextElementSibling.classList.add("active");
+        //Caret Positioning on Next word
+        changeXY("left", typebox.current.querySelector(".active").firstChild.getBoundingClientRect());
       }
-
-      //Next word handling
-      active.classList.remove("active");
-      active.nextElementSibling.classList.add("active");
       typed = []
-      //Caret Positioning on Next word
-      changeXY("left", typebox.current.querySelector(".active").firstChild.getBoundingClientRect());
-
-    }else if (event.key === "Backspace" && typed.length > 0) {
+    } else if (event.key === "Backspace" && typed.length > 0) {
       //Deletion handling
       let child = active.children[typed.length - 1]
       typed.pop()
       if ("extra" === active.lastChild.classList[0]) {
         active.lastChild.remove()
         changeXY("left", active.lastChild.getBoundingClientRect());
-      }else{
+      } else {
         child.classList.remove("correct")
         child.classList.remove("incorrect")
         if (typed.length > 0) {
           let removed = active.children[typed.length - 1]
           changeXY("right", removed.getBoundingClientRect());
-        }else if (typed.length === 0) {
+        } else if (typed.length === 0) {
           let removed = active.children[typed.length]
           changeXY("left", removed.getBoundingClientRect());
         }
@@ -189,7 +200,7 @@ function Home() {
             {targetMap()}
           </div>
         </>}
-        <button type = "button" onClick={() => {if(isStats) {window.location.reload()}else{setIsStats(!isStats)}}}>Toggle stats</button>
+        <button type = "button" onClick={() => {if(isStats) {window.location.reload()} else {setIsStats(!isStats)}}}>Toggle stats</button>
     </>
   );
 }
